@@ -71,3 +71,32 @@ def pregunta_01():
 
 
     """
+
+    import os
+    import pandas as pd
+    datasets = [("files/input/train", "files/output/train_dataset.csv"), 
+                ("files/input/test", "files/output/test_dataset.csv")]
+
+    for base_dir, output_file in datasets:
+        data = []
+        
+        for sentiment in ["positive", "negative", "neutral"]:
+            sentiment_path = os.path.join(base_dir, sentiment)
+            
+            if os.path.exists(sentiment_path):
+                for file_name in os.listdir(sentiment_path):
+                    file_path = os.path.join(sentiment_path, file_name)
+                    
+                    with open(file_path, "r", encoding="utf-8") as file:
+                        phrase = file.read().strip()
+                        data.append([phrase, sentiment, file_path])  # Frase, sentimiento y ruta
+        
+        # Crear DataFrame y guardar en CSV
+        df = pd.DataFrame(data, columns=["phrase", "target", "file_path"])
+        df.to_csv(output_file, index=False, encoding="utf-8")
+pregunta_01()
+print("Archivos generados exitosamente.")
+
+
+
+    
